@@ -1,0 +1,109 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+class Project {
+public:
+    string num;
+    string name;
+    string email;
+    void setData() {
+        cout << "Enter number: ";
+        getline(cin, num);
+        if (num.length() < 10) {
+            cout << "Invalid Number. Please enter at least 10 digits." << endl;
+            return;
+        }
+        cout << "Enter name: ";
+        getline(cin, name);
+        cout << "Enter email: ";
+        getline(cin, email);
+    }
+    void showData() {
+        cout << "Number: " << num << "\n";
+        cout << "Name: " << name << "\n";
+        cout << "Email address: " << email << endl;
+    }
+};
+void insertdata(vector<Project>& projects) {
+    Project newProject;
+    newProject.setData();
+    projects.push_back(newProject);
+}
+void deletedata(vector<Project>& projects, string num) {
+    for (vector<Project>::iterator it = projects.begin(); it != projects.end(); ) {
+        if (it->num == num) {
+            it = projects.erase(it);
+            cout << "Entry with num " << num << " deleted." << endl;
+            return;
+        } else {
+            ++it;
+        }
+    }
+    cout << "No entry found with num " << num << "." << endl;
+}
+void displaydata(vector<Project>& projects) {
+    for (vector<Project>::iterator it = projects.begin(); it != projects.end(); ++it) {
+        it->showData();
+    }
+}
+void modifydata(vector<Project>& projects, string num) {
+    for (vector<Project>::iterator it = projects.begin(); it != projects.end(); ++it) {
+        if (it->num == num) {
+            cout << "Modifying entry for num: " << num << endl;
+            cout << "Enter new name: ";
+            getline(cin, it->name);
+            cout << "Enter new email: ";
+            getline(cin, it->email);
+            cout << "Entry updated." << endl;
+            return;
+        }
+    }
+    cout << "No entry found with num " << num << "." << endl;
+}
+int main() {
+    vector<Project> projects;
+    int choice;
+    do {
+        cout << "\nMenu:\n";
+        cout<< "1. Insert Entry\n";
+        cout<< "2. Delete Entry\n";
+        cout<< "3. Display Entries\n";
+        cout<< "4. Modify Entry\n";
+        cout<< "5. Exit\n";
+        cout<< "Enter your choice: ";
+        cin >> choice;
+        cin.ignore();
+        switch (choice) {
+            case 1:
+                cout << "Inserting a new entry." << endl;
+                insertdata(projects);
+                break;
+            case 2: {
+                string numToDelete;
+                cout << "Enter num of entry to delete: ";
+                getline(cin, numToDelete);
+                deletedata(projects, numToDelete);
+                break;
+            }
+            case 3:
+                cout << "Displaying all entries." << endl;
+                displaydata(projects);
+                break;
+            case 4: {
+                string numToModify;
+                cout << "Enter num of entry to modify: ";
+                getline(cin, numToModify);
+                modifydata(projects, numToModify);
+                break;
+            }
+            case 5:
+                cout << "Exiting program." << endl;
+                break;
+            default:
+                cout << "Invalid choice. Please enter a number between 1 and 5." << endl;
+                break;
+        }
+    } while (choice != 5);
+    return 0;
+}
